@@ -1,0 +1,18 @@
+{
+  "name": "api-automation-pack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright TypeScript API automation framework",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  }
+}

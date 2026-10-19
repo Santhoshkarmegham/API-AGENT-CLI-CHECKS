@@ -1,0 +1,261 @@
+llm:
+  models_file: ./llms.json
+  # active: azure-gpt4o   # profile to use; default: "default" in llms.json (Tab switches in the shell)
+
+browser:
+  # provider: local          # local | browserstack | testmu
+  # providers:               # keep BrowserStack / TestMu AI details in separate YAML files
+  #   browserstack: ./.forgeqe/browserstack.yaml
+  #   testmu: ./.forgeqe/testmu.yaml
+  #                         # ForgeQE's agent can switch to one of these per request with browser_provider
+  headless: true
+  max_steps: 40 # a checkpoint: a run still making progress carries on, up to 3x
+  timeout_seconds: 600 # whole run
+  vision_detail: low # low | high
+  viewport:
+    width: 1280
+    height: 800
+  allowed_hosts: []
+  judge: false # true: a second model call checks each finished run against the goal and can fail it
+  overlay: true # visible browser: ForgeQE start page, edge glow, a bar with the current step, your mouse and keyboard locked while the agent works
+  # start_url: https://staging.example.com   # optional; omit to let the agent choose the site
+  # remote:                    # inline settings for the selected remote provider; override the provider file when both are set
+  #   browser: chrome   # BrowserStack: chrome or edge (ForgeQE drives the browser over CDP)
+  #   browser_version: latest
+  #   os: OS X                  # BrowserStack: Windows or OS X
+  #   os_version: Sequoia       # 11, 10, Sequoia, Sonoma, ...
+  #   # platform: Windows 11   # TestMu AI prefers platform, or set os/os_version and ForgeQE joins them
+  #   username_env: BROWSERSTACK_USERNAME   # TestMu AI default: LT_USERNAME
+  #   access_key_env: BROWSERSTACK_ACCESS_KEY   # TestMu AI default: LT_ACCESS_KEY
+  #   project: ForgeQE
+  #   build: nightly
+  #   name: checkout smoke
+  #   local: false             # true: BrowserStack Local / LambdaTest tunnel
+  #   extra:                   # provider-specific capability overrides
+  #     browserstack.console: errors
+
+# Every agent prompt is a file in .forgeqe/prompts/ (forgeqe init copies them; edit one to change it, forgeqe prompts
+# lists them). These two short ones are added to the browser agent's prompt too.
+prompts:
+  step_instruction: ""
+  guiderails: ""
+  # dir: ../shared-prompts      # a folder of prompts that wins over .forgeqe/prompts (shared between projects)
+
+# Product knowledge (.forgeqe/knowledge): what the agents should know about the product.
+# knowledge:
+#   dir: .forgeqe/knowledge
+#   browser_max_chars: 1500     # most knowledge added to each browser run (only sections that match the goal); 0: none
+
+# The product's industry and the regulations in scope. Agents then design and judge tests as an expert in that
+# industry would, and add each regulation's obligations a feature touches. Your applicable controls, with their ids,
+# go in .forgeqe/knowledge/compliance.md; agents cite only ids listed there.
+# Teams and email notifications for the team: each channel picks its events (suite_failed, suite_passed, release,
+# eval_failed). The Teams webhook URL is a secret: keep it in the environment, never here. See HOW_TO_USE.md section 17.
+# notify:
+#   report_url: https://reports.example.com/forgeqe   # where .forgeqe/reports is published; cards link each report
+#   channels:
+#     qa:
+#       teams: { webhook_env: TEAMS_WEBHOOK_URL }      # a Teams Workflows "post to a channel when a webhook request is received"
+#       on: [suite_failed, eval_failed]
+#     release:
+#       teams: { webhook_env: TEAMS_RELEASE_WEBHOOK }
+#       on: [release]
+
+# domain:
+#   industry: retail banking
+#   regulations: [DORA, PSD2, GDPR, ISO 27001]
+#   notes: Payments to UK and EU accounts; customers are consumers and small businesses.
+
+export:
+  out_dir: ./.forgeqe/reports # one folder per run, named by its run id: report, steps, screenshots, trace
+  format: playwright
+
+memory:
+  enabled: true
+  dir: ./.forgeqe/memory # pages, elements, locators, and recorded flows
+  replay: verify # verify | trust | off
+
+code:
+  # repo: ../my-app          # where passed runs become tests (default: the current folder; --no-code turns it off)
+  # test_command: npx playwright test   # the repo's test command, for forgeqe heal; default: the agent finds it
+  max_attempts: 3            # test runs before giving up (also healing attempts); each attempt after the first starts a fresh session from a summary
+  # max_tokens: 1500000      # stop a coding job past this many tokens (cached included) and report how far it got
+  # review_profile: azure-mini  # llms.json profile for the reviewer, which only reads and judges: a cheaper model is enough
+  test_timeout_seconds: 600  # per test run
+  stall_after: 5             # stop the coding agent when one command it runs has failed this many times
+  replay: true               # before the coding agent starts, run the steps as a Playwright script and hand over what worked and where it failed
+  live_browser: true         # once a step fails, the coding agent looks at that page in a Playwright browser instead of building tests to look
+  graph: true                # read the repo's code into a graph (classes, members, tests, locators) and link the handoff's elements to the page objects that already locate them
+  # model: anthropic/claude-sonnet-4-5   # model for ForgeQE's agent and Scribe; default: the active llms.json profile
+  # runtime: /path/to/agent-runtime      # default: the runtime ForgeQE downloads
+
+# Skills: folders with a SKILL.md that teach the agents your repo's test conventions, a framework, or an app.
+# ForgeQE ships some; yours go in .forgeqe/skills next to this file (commit them) or ~/.forgeqe/skills.
+# A skill replaces a built-in one with the same name. forgeqe skills lists them; forgeqe skills new <name> starts one.
+# skills:
+#   enabled: true
+#   dirs: [../shared-skills]   # more folders, read last (they win over the others)
+#   disable: [dynamics-365]    # skills to leave out; forgeqe skills enable|disable <name> edits this
+#   external: false            # true: also ~/.claude/skills, ~/.agents/skills, and the repo's .claude/.agents skills
+#   browser_max_chars: 6000    # most skill text added to one browser run's prompt
+
+# Sites the browser agent signs in to. Values stay in the environment; the model only sees placeholders.
+# Sessions (cookies + local storage) are kept in .forgeqe/sessions/<name>.json so the next run starts signed in;
+# keep that folder out of git. forgeqe login <name> saves a session you sign in to by hand (SSO, captcha).
+# logins:
+#   shop:
+#     url: https://staging.shop.example/login   # or domains: [https://staging.shop.example, https://*.shop.example]
+#     username_env: SHOP_USER
+#     password_env: SHOP_PASSWORD
+#     totp_env: SHOP_TOTP_SECRET                # optional: authenticator secret (base32) for 2FA codes
+#     # save_session: false                     # sign in every run instead
+
+report:
+  screenshots: all            # all | failures | off: step screenshots in report.html
+  accessibility: true         # check each page the agent visits (names, labels, image text, contrast, lang, zoom)
+
+# Offline BI with Evidence: ForgeQE exports CSV datasets and runs Evidence (@evidence-dev/evidence 40.x, needs Node.js)
+# to build a static site, no always-on server. forgeqe bi init scaffolds the Evidence project, forgeqe bi sync refreshes
+# the data, forgeqe bi build does both and builds the site; without Node.js, or with --static, it writes ForgeQE's own
+# page instead. The datasets below are optional: local ForgeQE suite/readiness data exports either way.
+# Dataset ids are table names (forgeqe.<id>): letters, digits, and _.
+# bi:
+#   title: ForgeQE BI
+#   # evidence_dir: ./evidence                    # the managed Evidence project
+#   # data_dir: ./evidence/sources/forgeqe       # CSV exports; copied there when set elsewhere
+#   # build_dir: ./.forgeqe/reports/bi           # static HTML output from evidence build
+#   datasets:
+#     ado_current_sprint:
+#       kind: ado_wiql
+#       title: Current sprint stories
+#       project: Shop
+#       wiql: |
+#         SELECT [System.Id]
+#         FROM WorkItems
+#         WHERE [System.TeamProject] = @project
+#           AND [System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'
+#           AND [System.State] <> 'Removed'
+#     jira_open_bugs:
+#       kind: jira_jql
+#       title: Open Jira bugs
+#       jql: project = SHOP AND issuetype = Bug AND statusCategory != Done ORDER BY updated DESC
+
+# Test case systems, for ForgeQE's agent and forgeqe suite / cases. Keys stay in the environment.
+# ForgeQE's agent also gets each system's MCP server, set up from these same settings (forgeqe mcp list).
+sources:
+  write_back: true            # post results back to the system each case came from
+  azure_devops:
+    org_url: https://dev.azure.com/DevCGAzureDevOps   # or ADO_ORG_URL. The MCP server is this organization, every project.
+  #   # project: Shop                       # optional: limit ForgeQE's own test, sprint, and bug calls to one project. Or ADO_PROJECT. * or all means every project.
+  #   token_env: ADO_PAT                    # PAT with Test Management + Work Items (read & write)
+  #   mcp: true                             # Microsoft's Azure DevOps MCP server (needs npx); false: API only
+  #   # mcp_domains: [core, work, work-items, pipelines]   # the default; add test-plans, repositories, wiki, search, advanced-security, or use [all]
+  # jira:
+  #   url: https://acme.atlassian.net       # or JIRA_URL; Server/Data Center URLs work too
+  #   email_env: JIRA_EMAIL                 # Cloud only
+  #   token_env: JIRA_API_TOKEN             # Cloud API token, or a Server/DC personal access token
+  #   mcp: mcp-atlassian                    # mcp-atlassian (uvx; Cloud and Server/DC) | rovo (Atlassian's hosted server, Cloud) | false
+  # xray:                                   # no MCP server: ForgeQE's API tools cover Xray
+  #   url: https://xray.cloud.getxray.app   # Xray Cloud; Server/DC uses the jira: settings above
+  #   client_id_env: XRAY_CLIENT_ID
+  #   client_secret_env: XRAY_CLIENT_SECRET
+  # confluence: true                        # requirements pages on the Jira Cloud site above, same account
+  # confluence:                             # or a separate site
+  #   url: https://confluence.acme.com      # or CONFLUENCE_URL; Cloud: https://acme.atlassian.net/wiki
+  #   email_env: CONFLUENCE_EMAIL           # Cloud only
+  #   token_env: CONFLUENCE_TOKEN           # Cloud API token, or a Server/DC personal access token
+  #   space: QA                             # optional: search this space only
+  # testrail:
+  #   url: https://acme.testrail.io         # or TESTRAIL_URL
+  #   email_env: TESTRAIL_EMAIL
+  #   token_env: TESTRAIL_API_KEY
+  #   project_id: 1                         # for testrail:suite=<id>
+  # zephyr:                                 # Zephyr Scale Cloud; on when ZEPHYR_API_TOKEN is set
+  #   token_env: ZEPHYR_API_TOKEN
+  #   project_key: SHOP                     # for zephyr:folder=<id>
+  # qtest:
+  #   url: https://acme.qtestnet.com        # or QTEST_URL
+  #   token_env: QTEST_TOKEN                # API bearer token
+  #   project_id: 12345
+  #   statuses: { passed: PASS, failed: FAIL, error: BLOCKED }   # automation status names in your qTest
+  # github:                                 # GitHub issues as test cases (github:#12, github:label=login) and bugs;
+  #   repo: acme/shop                       # also turns on GitHub's MCP server (on anyway in a repo with a GitHub remote)
+  #   token_env: GITHUB_TOKEN               # default; without it, the GitHub CLI's sign-in (forgeqe auth login github)
+  #   toolsets: [repos, issues, pull_requests, actions]   # the MCP server's tool groups; mcp: false turns it off
+  # bugs:                                   # a bug per defect; still failing: a comment on the open bug
+  #   system: jira                          # jira | azure_devops | github
+  #   project: SHOP                         # Jira project key; GitHub owner/repo (Azure DevOps uses azure_devops.project)
+  #   type: Bug                             # issue / work item type
+  #   labels: [forgeqe]                    # Jira labels or Azure DevOps tags
+  #   # area_path: Shop\\Web                # Azure DevOps
+  #   # on_error: false                     # also for cases that could not run
+  #   # group_by: defect                    # defect: cases failing the same way share a bug; case: a bug per case
+  #                                         # a defect back after its bug closed gets a new "Regression:" bug linked to it
+
+# defects:                     # defect intelligence: repro files, suspect commits, root-cause hypotheses
+#   product_repo: ../shop      # the application's repository: suspect commits, and the code the analysis reads
+#   reproduce: true            # run the first case of each new defect once more, to see whether it repeats
+#   analyze: true              # a model writes a root-cause hypothesis for new defects and regressions (one session each)
+#   max_analyses: 3            # most analyses per suite
+
+# More MCP servers for ForgeQE's agent. Use {env:NAME} for secrets; never put values here.
+# mcp:
+#   github:
+#     url: https://api.githubcopilot.com/mcp/
+#     headers: { Authorization: "Bearer {env:GITHUB_TOKEN}" }
+#   xray:
+#     command: npx -y @triparc/xray-mcp
+#     env: { XRAY_CLIENT_ID: "{env:XRAY_CLIENT_ID}", XRAY_CLIENT_SECRET: "{env:XRAY_CLIENT_SECRET}" }
+
+suite:
+  parallel: 1                 # browsers at once; coding jobs always run one at a time
+  code: true                  # with a repo set, passed cases get a test from Scribe
+  # out_dir: ./.forgeqe/reports/suites
+
+# Accessibility (axe-core, WCAG) and performance (Core Web Vitals) of every page a run visits. Without budgets they
+# are reported and tracked over time; a run fails on them only when a budget below is exceeded.
+# quality:
+#   accessibility:
+#     standard: wcag21aa          # wcag2a, wcag21aa, wcag22aa, wcag21aaa, section508, en301549, best-practice
+#   visual:                       # each page compared with its approved screenshot (.forgeqe/visual-baselines)
+#     mask: [".clock", "#ad-slot"]  # hidden before capture
+#     full_page: false
+#   budgets:
+#     accessibility: { critical: 0, serious: 0, ignore: [region] }
+#     performance: web-vitals     # or { lcp_ms: 3000, cls: 0.1, inp_ms: 200, pages: { /search: { lcp_ms: 4000 } } }
+#     visual: 0.5                 # most a page may change, in percent of its pixels
+
+# API and contract tests (REST, GraphQL, SOAP, gRPC). Every browser run records the app's API calls (secrets
+# redacted) in network.json; forgeqe api contracts / run / tests turn them, or an OpenAPI, WSDL, GraphQL, or .proto
+# description, into contracts and tests. Header values are ${NAME} references to environment variables.
+# api:
+#   capture: true                 # record the app's API calls in browser runs
+#   base_url: https://staging.shop.example
+#   headers:
+#     Authorization: Bearer ${API_TOKEN}
+#   third_party: false            # keep calls to other sites than the page's
+#   timeout_seconds: 30
+
+# forgeqe monitor: run checks on a schedule and alert when one starts failing, keeps failing, or recovers.
+# Secrets stay in the environment; only their names go here.
+# monitor:
+#   checks: [checks/smoke.yaml]   # any case sources: files, folders, jira:..., ado:..., testrail:...
+#   every: 15m                    # 30s, 15m, 1h, 1h30m; at least 10s
+#   replay: verify                # verify: one model call per check confirms the result; trust: none
+#   parallel: 1
+#   fail_after: 1                 # failing rounds in a row before the first alert (2+ rides out flaky runs)
+#   remind_every: 2h              # repeat the alert while it keeps failing; default: never
+#   keep: 100                     # round folders kept; older ones are deleted
+#   write_back: false             # post each round's results to the source system
+#   # out_dir: ./.forgeqe/reports/monitor   # rounds and state.json (which checks are failing, and since when)
+#   # report_url: https://reports.example.com/monitor   # where out_dir is published; alerts link <url>/<round>/report.html
+#   alerts:
+#     teams:                      # a Teams incoming webhook or Workflows "post to a channel when a webhook request is received"
+#       webhook_env: TEAMS_WEBHOOK_URL
+#     email:
+#       host: smtp.office365.com  # or SMTP_HOST
+#       port: 587                 # STARTTLS; 465 is TLS from the start
+#       username_env: SMTP_USERNAME
+#       password_env: SMTP_PASSWORD
+#       # from: ForgeQE <qa-bot@example.com>   # default: the username
+#       to: [qa-team@example.com]

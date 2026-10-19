@@ -1,0 +1,51 @@
+{
+  "default": "openai-gpt5.4",
+  "models": {
+    "azure-gpt4o": {
+      "provider": "azure",
+      "model": "gpt-5.4",
+      "deployment": "gpt-5.4",
+      "endpoint": "https://rfpqualityai2.cognitiveservices.azure.com/",
+      "api_key_env": "WP_AZURE_API_KEY",
+      "api_version": "2024-05-01-preview",
+      "temperature": 0.2,
+      "deployment_type": "global",
+      "description": "Azure OpenAI GPT-5.4 (vision)"
+    },
+    "azure-gpt4o-entra": {
+      "provider": "azure",
+      "model": "gpt-5.4",
+      "deployment": "gpt-5.4",
+      "endpoint": "https://YOUR_RESOURCE.openai.azure.com/",
+      "auth": "entra",
+      "managed_identity_client_id": "",
+      "api_version": "2024-05-01-preview",
+      "temperature": 0.2,
+      "deployment_type": "global",
+      "description": "Azure OpenAI GPT-5.4 with Microsoft Entra ID (managed identity, workload identity or az login); no key"
+    },
+    "openai-gpt4o": {
+      "provider": "openai",
+      "model": "gpt-5.4",
+      "api_key_env": "OPENAI_API_KEY",
+      "temperature": 0.2,
+      "description": "OpenAI GPT-5.4 (vision)"
+    },
+    "ollama-llama": {
+      "provider": "ollama",
+      "model": "llama3.2",
+      "endpoint": "http://127.0.0.1:11434/v1",
+      "api_key_env": "WP_API_KEY",
+      "temperature": 0.2,
+      "description": "Local Ollama"
+    },
+    "compatible": {
+      "provider": "openai_compatible",
+      "model": "gpt-4o",
+      "endpoint": "https://your-gateway.example/v1",
+      "api_key_env": "WP_API_KEY",
+      "temperature": 0.2,
+      "description": "Any OpenAI-compatible chat endpoint"
+    }
+  }
+}

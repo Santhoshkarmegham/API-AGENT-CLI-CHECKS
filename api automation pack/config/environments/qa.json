@@ -1,0 +1,11 @@
+{
+  "baseURL": "https://api.qaautomationlabs.com/v1/",
+  "auth": {
+    "enabled": false,
+    "tokenEnv": "API_AUTH_TOKEN",
+    "loginPath": "./auth/login",
+    "usernameEnv": "API_USERNAME",
+    "passwordEnv": "API_PASSWORD",
+    "tokenJsonPath": "token"
+  }
+}
