@@ -1,0 +1,13 @@
+{
+  "invalidLogin": {
+    "email": "invalid.user@example.com",
+    "password": "incorrect-password",
+    "expectedErrorMarker": "Your email or password is incorrect!"
+  },
+  "expected": {
+    "signupStartMarker": "Enter Account Information",
+    "accountCreatedMarker": "Account Created!",
+    "loggedInMarker": "Logged in as",
+    "accountDeletedMarker": "Account Deleted!"
+  }
+}

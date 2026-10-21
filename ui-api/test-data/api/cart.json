@@ -1,0 +1,16 @@
+{
+  "smokeProduct": {
+    "productId": 1,
+    "quantity": 2,
+    "cartMarkers": [
+      "product-1",
+      "Blue Top"
+    ]
+  },
+  "expected": {
+    "checkoutMarkers": [
+      "Address Details",
+      "Review Your Order"
+    ]
+  }
+}
