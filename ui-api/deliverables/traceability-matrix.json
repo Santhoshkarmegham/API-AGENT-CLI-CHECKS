@@ -1,0 +1,58 @@
+[
+  {
+    "uiAction": "Delete the temporary account created by the test",
+    "capturedNetworkRequest": "GET /delete_account",
+    "discoveredApi": "GET /delete_account (default)",
+    "generatedTestCase": "authentication :: signup, login, and delete account from observed traffic",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Log out and log back in with the generated account",
+    "capturedNetworkRequest": "GET /logout",
+    "discoveredApi": "GET /logout (default)",
+    "generatedTestCase": "Not generated",
+    "executionResult": "not_generated"
+  },
+  {
+    "uiAction": "Execute invalid login scenario",
+    "capturedNetworkRequest": "POST /login",
+    "discoveredApi": "POST /login (default)",
+    "generatedTestCase": "authentication :: signup, login, and delete account from observed traffic | authentication :: invalid login returns the observed error response",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Log out and log back in with the generated account",
+    "capturedNetworkRequest": "POST /login",
+    "discoveredApi": "POST /login (default)",
+    "generatedTestCase": "authentication :: signup, login, and delete account from observed traffic | authentication :: invalid login returns the observed error response",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Register a temporary account and validate the logged-in state",
+    "capturedNetworkRequest": "POST /signup",
+    "discoveredApi": "POST /signup (create_account)",
+    "generatedTestCase": "authentication :: signup, login, and delete account from observed traffic",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Register a temporary account and validate the logged-in state",
+    "capturedNetworkRequest": "POST /signup",
+    "discoveredApi": "POST /signup (signup)",
+    "generatedTestCase": "authentication :: signup, login, and delete account from observed traffic",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Add products to cart and update quantity where supported",
+    "capturedNetworkRequest": "GET /add_to_cart/1?quantity=2",
+    "discoveredApi": "GET /add_to_cart/{productId} (default)",
+    "generatedTestCase": "cart :: add and delete item through observed backend endpoints",
+    "executionResult": "passed"
+  },
+  {
+    "uiAction": "Remove a product from the cart",
+    "capturedNetworkRequest": "GET /delete_cart/2",
+    "discoveredApi": "GET /delete_cart/{productId} (default)",
+    "generatedTestCase": "cart :: add and delete item through observed backend endpoints",
+    "executionResult": "passed"
+  }
+]

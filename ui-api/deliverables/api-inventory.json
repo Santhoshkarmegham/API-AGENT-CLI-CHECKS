@@ -1,0 +1,255 @@
+{
+  "generatedAt": "2026-10-21T19:00:09.823Z",
+  "sourceTest": "executes homepage, product, cart, authentication, and checkout journeys",
+  "totals": {
+    "discoveredCandidates": 7,
+    "uniqueEndpoints": 6,
+    "excludedRequests": 655
+  },
+  "modules": {
+    "authentication": [
+      {
+        "id": "authentication-get-delete-account-default",
+        "method": "GET",
+        "endpoint": "/delete_account",
+        "variant": "default",
+        "samplePath": "/delete_account",
+        "sampleQuery": {},
+        "uiActions": [
+          "Delete the temporary account created by the test"
+        ],
+        "observedStatusCodes": [
+          200
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [],
+        "redactedKeys": [],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      },
+      {
+        "id": "authentication-get-logout-default",
+        "method": "GET",
+        "endpoint": "/logout",
+        "variant": "default",
+        "samplePath": "/logout",
+        "sampleQuery": {},
+        "uiActions": [
+          "Log out and log back in with the generated account"
+        ],
+        "observedStatusCodes": [
+          302
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [],
+        "redactedKeys": [],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      },
+      {
+        "id": "authentication-post-login-default",
+        "method": "POST",
+        "endpoint": "/login",
+        "variant": "default",
+        "samplePath": "/login",
+        "sampleQuery": {},
+        "uiActions": [
+          "Execute invalid login scenario",
+          "Log out and log back in with the generated account"
+        ],
+        "observedStatusCodes": [
+          200,
+          302
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [
+          "csrfmiddlewaretoken",
+          "email",
+          "password"
+        ],
+        "redactedKeys": [
+          "csrfmiddlewaretoken",
+          "password"
+        ],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid",
+          "csrfmiddlewaretoken"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      },
+      {
+        "id": "authentication-post-signup-create-account",
+        "method": "POST",
+        "endpoint": "/signup",
+        "variant": "create_account",
+        "samplePath": "/signup",
+        "sampleQuery": {},
+        "uiActions": [
+          "Register a temporary account and validate the logged-in state"
+        ],
+        "observedStatusCodes": [
+          302
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [
+          "csrfmiddlewaretoken",
+          "title",
+          "name",
+          "email_address",
+          "password",
+          "days",
+          "months",
+          "years",
+          "first_name",
+          "last_name",
+          "company",
+          "address1",
+          "address2",
+          "country",
+          "state",
+          "city",
+          "zipcode",
+          "mobile_number",
+          "form_type"
+        ],
+        "redactedKeys": [
+          "csrfmiddlewaretoken",
+          "password"
+        ],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid",
+          "csrfmiddlewaretoken"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      },
+      {
+        "id": "authentication-post-signup-signup",
+        "method": "POST",
+        "endpoint": "/signup",
+        "variant": "signup",
+        "samplePath": "/signup",
+        "sampleQuery": {},
+        "uiActions": [
+          "Register a temporary account and validate the logged-in state"
+        ],
+        "observedStatusCodes": [
+          200
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [
+          "csrfmiddlewaretoken",
+          "name",
+          "email",
+          "form_type"
+        ],
+        "redactedKeys": [
+          "csrfmiddlewaretoken"
+        ],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid",
+          "csrfmiddlewaretoken"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      }
+    ],
+    "cart": [
+      {
+        "id": "cart-get-add-to-cart-productid-default",
+        "method": "GET",
+        "endpoint": "/add_to_cart/{productId}",
+        "variant": "default",
+        "samplePath": "/add_to_cart/1",
+        "sampleQuery": {
+          "quantity": "2"
+        },
+        "uiActions": [
+          "Add products to cart and update quantity where supported"
+        ],
+        "observedStatusCodes": [
+          200
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [],
+        "redactedKeys": [],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      },
+      {
+        "id": "cart-get-delete-cart-productid-default",
+        "method": "GET",
+        "endpoint": "/delete_cart/{productId}",
+        "variant": "default",
+        "samplePath": "/delete_cart/2",
+        "sampleQuery": {},
+        "uiActions": [
+          "Remove a product from the cart"
+        ],
+        "observedStatusCodes": [
+          200
+        ],
+        "observedContentTypes": [
+          "text/html"
+        ],
+        "requestFields": [],
+        "redactedKeys": [],
+        "authDependencies": [
+          "cookie:csrftoken",
+          "cookie:sessionid"
+        ],
+        "cookieDependencies": [
+          "csrftoken",
+          "sessionid"
+        ],
+        "correlationHeaderNames": []
+      }
+    ]
+  }
+}

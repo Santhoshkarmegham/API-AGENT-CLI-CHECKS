@@ -1,0 +1,71 @@
+[
+  {
+    "suite": "Authentication positive suite",
+    "tags": [
+      "@smoke",
+      "@regression"
+    ],
+    "focus": "Signup start and account creation happy paths",
+    "validations": [
+      "status",
+      "content-type",
+      "headers",
+      "redirect location",
+      "response body"
+    ]
+  },
+  {
+    "suite": "Authentication negative suite",
+    "tags": [
+      "@negative",
+      "@regression"
+    ],
+    "focus": "Observed invalid login behavior",
+    "validations": [
+      "status",
+      "content-type",
+      "headers",
+      "error response body"
+    ]
+  },
+  {
+    "suite": "Cart positive suite",
+    "tags": [
+      "@smoke",
+      "@regression"
+    ],
+    "focus": "Observed add-to-cart and delete-cart workflow",
+    "validations": [
+      "status",
+      "content-type",
+      "cart markers",
+      "state removal"
+    ]
+  },
+  {
+    "suite": "Observed API end-to-end workflows",
+    "tags": [
+      "@e2e",
+      "@regression"
+    ],
+    "focus": "Signup, login, cart, checkout, delete-account chaining",
+    "validations": [
+      "redirects",
+      "dynamic identifiers",
+      "session continuity",
+      "response body"
+    ]
+  },
+  {
+    "suite": "Generated observed API scripts",
+    "tags": [
+      "@regression"
+    ],
+    "focus": "Replay of real UI-observed endpoints",
+    "validations": [
+      "observed behavior parity",
+      "supported assumptions only",
+      "workflow reuse"
+    ]
+  }
+]

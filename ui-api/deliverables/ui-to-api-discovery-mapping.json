@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-10-21T19:36:47.766Z",
+  "mappings": {
+    "Add products to cart and update quantity where supported": [
+      {
+        "candidateId": "cart-get-add-to-cart-productid-default",
+        "module": "cart",
+        "method": "GET",
+        "endpoint": "/add_to_cart/{productId}",
+        "variant": "default"
+      }
+    ],
+    "Delete the temporary account created by the test": [
+      {
+        "candidateId": "authentication-get-delete-account-default",
+        "module": "authentication",
+        "method": "GET",
+        "endpoint": "/delete_account",
+        "variant": "default"
+      }
+    ],
+    "Execute invalid login scenario": [
+      {
+        "candidateId": "authentication-post-login-default",
+        "module": "authentication",
+        "method": "POST",
+        "endpoint": "/login",
+        "variant": "default"
+      }
+    ],
+    "Log out and log back in with the generated account": [
+      {
+        "candidateId": "authentication-get-logout-default",
+        "module": "authentication",
+        "method": "GET",
+        "endpoint": "/logout",
+        "variant": "default"
+      },
+      {
+        "candidateId": "authentication-post-login-default",
+        "module": "authentication",
+        "method": "POST",
+        "endpoint": "/login",
+        "variant": "default"
+      }
+    ],
+    "Register a temporary account and validate the logged-in state": [
+      {
+        "candidateId": "authentication-post-signup-create-account",
+        "module": "authentication",
+        "method": "POST",
+        "endpoint": "/signup",
+        "variant": "create_account"
+      },
+      {
+        "candidateId": "authentication-post-signup-signup",
+        "module": "authentication",
+        "method": "POST",
+        "endpoint": "/signup",
+        "variant": "signup"
+      }
+    ],
+    "Remove a product from the cart": [
+      {
+        "candidateId": "cart-get-delete-cart-productid-default",
+        "module": "cart",
+        "method": "GET",
+        "endpoint": "/delete_cart/{productId}",
+        "variant": "default"
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "updatedAt": "2026-10-21T19:00:12.350Z",
+  "suites": [
+    {
+      "suite": "e2e",
+      "command": "npm run test:e2e",
+      "generatedAt": "2026-10-21T18:57:41.698Z",
+      "status": "passed",
+      "expected": 1,
+      "unexpected": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "durationMs": 4535
+    },
+    {
+      "suite": "full",
+      "command": "npm run test",
+      "generatedAt": "2026-10-21T18:59:34.906Z",
+      "status": "passed",
+      "expected": 9,
+      "unexpected": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "durationMs": 36958
+    },
+    {
+      "suite": "negative",
+      "command": "npm run test:negative",
+      "generatedAt": "2026-10-21T18:57:39.177Z",
+      "status": "passed",
+      "expected": 1,
+      "unexpected": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "durationMs": 1813
+    },
+    {
+      "suite": "regression",
+      "command": "npm run test:regression",
+      "generatedAt": "2026-10-21T18:57:30.584Z",
+      "status": "passed",
+      "expected": 5,
+      "unexpected": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "durationMs": 7885
+    },
+    {
+      "suite": "smoke",
+      "command": "npm run test:smoke",
+      "generatedAt": "2026-10-21T18:57:27.138Z",
+      "status": "passed",
+      "expected": 2,
+      "unexpected": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "durationMs": 2756
+    }
+  ]
+}
